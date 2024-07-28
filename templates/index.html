@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Churn Prediction</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+        }
+        .container {
+            max-width: 650px;
+            margin: 60px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: 600;
+            color: #555;
+        }
+        input[type="number"] {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus {
+            border-color: #0077b6;
+            outline: none;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            background-color: #0288d1;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #026aa7;
+        }
+        .result {
+            margin-top: 25px;
+            font-weight: 600;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Bank Churn Prediction</h1>
+        {% if result %}
+        <div class="result">{{ result }}</div>
+        {% endif %}
+
+        <form id="prediction-form" action="/prediction" method="post">
+            <label for="amount-rub-sup-prc">Amount RUB (Supermarket Purchase):</label>
+            <input type="number" id="amount-rub-sup-prc" name="amount-rub-sup-prc" step="0.01" placeholder="Enter Amount RUB (Supermarket Purchase)">
+
+            <label for="rest-avg-cur">Rest Average (Current):</label>
+            <input type="number" id="rest-avg-cur" name="rest-avg-cur" step="0.01" placeholder="Enter Rest Average (Current)">
+
+            <label for="trans-count-atm-prc">Transaction Count (ATM):</label>
+            <input type="number" id="trans-count-atm-prc" name="trans-count-atm-prc" step="0.01" placeholder="Enter Transaction Count (ATM)">
+
+            <label for="amount-rub-atm-prc">Amount RUB (ATM):</label>
+            <input type="number" id="amount-rub-atm-prc" name="amount-rub-atm-prc" step="0.01" placeholder="Enter Amount RUB (ATM)">
+
+            <label for="cnt-tran-clo-tendency3m">Count Transaction Clothing (3 Months):</label>
+            <input type="number" id="cnt-tran-clo-tendency3m" name="cnt-tran-clo-tendency3m" step="0.01" placeholder="Enter Count Transaction Clothing (3 Months)">
+
+            <label for="rest-dynamic-cur-1m">Rest Dynamic (Current 1 Month):</label>
+            <input type="number" id="rest-dynamic-cur-1m" name="rest-dynamic-cur-1m" step="0.01" placeholder="Enter Rest Dynamic (Current 1 Month)">
+
+            <label for="sum-tran-sup-tendency1m">Sum Transaction Supermarket (1 Month):</label>
+            <input type="number" id="sum-tran-sup-tendency1m" name="sum-tran-sup-tendency1m" step="0.01" placeholder="Enter Sum Transaction Supermarket (1 Month)">
+
+            <label for="cnt-tran-sup-tendency1m">Count Transaction Supermarket (1 Month):</label>
+            <input type="number" id="cnt-tran-sup-tendency1m" name="cnt-tran-sup-tendency1m" step="0.01" placeholder="Enter Count Transaction Supermarket (1 Month)">
+
+            <label for="clnt-setup-tenor">Client Setup Tenure:</label>
+            <input type="number" id="clnt-setup-tenor" name="clnt-setup-tenor" step="0.01" placeholder="Enter Client Setup Tenure">
+
+            <label for="trans-amount-tendency3m">Transaction Amount Tendency (3 Months):</label>
+            <input type="number" id="trans-amount-tendency3m" name="trans-amount-tendency3m" step="0.01" placeholder="Enter Transaction Amount Tendency (3 Months)">
+
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to show the alert popup
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // popup with prediction result
+        document.getElementById('prediction-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/prediction', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => showAlert(data.result))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+</body>
+</html>
